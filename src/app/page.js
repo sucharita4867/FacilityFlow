@@ -5,6 +5,7 @@ import Stats from "../sections/Stats";
 import Services from "../sections/Services";
 import Industries from "../sections/Industries";
 import Process from "../sections/Process";
+import WhyChooseUs from "../sections/WhyChooseUs";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <Services />
         <Industries />
         <Process />
+        <WhyChooseUs />
       </main>
     </>
   );
