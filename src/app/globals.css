@@ -95,8 +95,19 @@ a {
    Section Spacing
 =========================== */
 
-.section-padding {
+/* .section-padding {
   padding: 120px 0;
+} */
+
+/* Hide Default Cursor on Fine Pointer Devices (Desktop) */
+@media (pointer: fine) {
+
+  body,
+  a,
+  button,
+  [role="button"] {
+    cursor: none !important;
+  }
 }
 
 @media (max-width: 768px) {
