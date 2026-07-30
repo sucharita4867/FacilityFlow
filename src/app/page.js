@@ -7,6 +7,7 @@ import Industries from "../sections/Industries";
 import Process from "../sections/Process";
 import WhyChooseUs from "../sections/WhyChooseUs";
 import MissionVision from "../sections/MissionVision";
+import Testimonials from "@/sections/Testimonials";
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
         <Process />
         <WhyChooseUs />
         <MissionVision />
+        <Testimonials />
       </main>
     </>
   );

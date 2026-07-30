@@ -1,144 +1,277 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import Badge from "@/components/ui/Badge";
+import {
+  Compass,
+  Sparkles,
+  ArrowRight,
+  ShieldCheck,
+  Clock,
+  Award,
+} from "lucide-react";
 import Container from "@/components/ui/Container";
-
+import Badge from "@/components/ui/Badge";
+import Button from "@/components/ui/Button";
 import { missionData } from "@/data/mission";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.6, ease: [0.215, 0.61, 0.355, 1] },
+  },
+};
 
 export default function MissionVision() {
   return (
-    <section id="mission" className="relative overflow-hidden bg-white py-32">
-      {/* Background */}
+    <section
+      id="mission"
+      aria-label="Mission, Vision & Values"
+      className="relative overflow-hidden bg-slate-50 py-24 sm:py-32 border-t border-slate-200/80"
+    >
+      {/* Decorative Light Background Accents */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `radial-gradient(circle at 1px 1px, rgba(11, 31, 58, 0.8) 1px, transparent 0)`,
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="pointer-events-none absolute -left-40 top-1/3 h-[500px] w-[500px] rounded-full bg-blue-200/30 blur-[150px]" />
+      <div className="pointer-events-none absolute right-0 bottom-10 h-[500px] w-[500px] rounded-full bg-cyan-200/30 blur-[160px]" />
 
-      <div className="absolute left-0 top-0 h-96 w-96 rounded-full bg-blue-100 blur-[150px]" />
-
-      <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-cyan-100 blur-[150px]" />
-
-      <Container>
+      <Container className="relative z-10">
+        {/* ================= EDITORIAL SECTION HEADER ================= */}
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.6 }}
           className="mx-auto max-w-3xl text-center"
         >
-          <Badge>Our Foundation</Badge>
+          <Badge className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-100/60 px-4 py-1.5 text-xs font-bold tracking-widest text-blue-700">
+            <Compass size={14} className="text-blue-600" />
+            <span>OUR FOUNDATION</span>
+          </Badge>
 
-          <h2 className="mt-6 text-4xl font-black text-[#0B1F3A] lg:text-6xl">
-            Mission,
-            <br />
-            Vision &
-            <br />
-            Values
+          <h2 className="mt-5 text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.12] text-[#0B1F3A]">
+            Mission, Vision & <br />
+            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600 bg-clip-text text-transparent">
+              Core Principles
+            </span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-600">
-            Every decision we make is guided by a clear mission, a long-term
-            vision and values that inspire trust, innovation and operational
-            excellence.
+          <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-600 font-normal">
+            Every operational decision we execute is guided by long-term vision,
+            predictive innovation, and an unwavering commitment to workplace
+            safety and excellence.
           </p>
         </motion.div>
 
-        {/* Cards */}
-
-        <div className="mt-20 grid gap-8 lg:grid-cols-3">
-          {missionData.map((item, index) => {
+        {/* ================= 3-COLUMN CARDS GRID ================= */}
+        <motion.div
+          className="mt-16 sm:mt-20 grid gap-6 lg:grid-cols-3"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-60px" }}
+        >
+          {missionData.map((item) => {
             const Icon = item.icon;
+            const isFeatured = item.featured;
 
             return (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.6,
-                  delay: index * 0.15,
-                }}
-                whileHover={{
-                  y: -10,
-                  scale: 1.02,
-                }}
-                className={`group relative overflow-hidden rounded-[32px] border transition-all duration-500 ${
-                  item.featured
-                    ? "border-blue-500 bg-gradient-to-br from-[#0B1F3A] via-[#163D73] to-[#2563EB] text-white shadow-[0_25px_60px_rgba(37,99,235,0.35)]"
-                    : "border-slate-200 bg-white shadow-lg hover:border-blue-200 hover:shadow-2xl"
+                variants={cardVariants}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                className={`group relative overflow-hidden rounded-[32px] p-8 sm:p-10 shadow-sm backdrop-blur-xl transition-all duration-300 flex flex-col justify-between ${
+                  isFeatured
+                    ? "border border-blue-500/30 bg-gradient-to-br from-[#0B1F3A] via-slate-900 to-[#102a4e] text-white shadow-xl shadow-blue-600/10"
+                    : "border border-slate-200/90 bg-white/80 text-slate-800 hover:border-blue-300 hover:bg-white hover:shadow-xl hover:shadow-blue-500/10"
                 }`}
               >
-                {/* Glow */}
-
+                {/* Soft Top Glow Highlight */}
                 <div
-                  className={`absolute -right-16 -top-16 h-40 w-40 rounded-full blur-3xl transition-all duration-500 ${
-                    item.featured
-                      ? "bg-white/10"
-                      : "bg-blue-100 opacity-0 group-hover:opacity-100"
+                  className={`pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full blur-2xl transition-all duration-500 ${
+                    isFeatured
+                      ? "bg-blue-500/20"
+                      : "bg-blue-100/60 group-hover:bg-blue-500/15"
                   }`}
                 />
 
-                <div className="relative p-10">
-                  <div
-                    className={`flex h-16 w-16 items-center justify-center rounded-2xl ${
-                      item.featured
-                        ? "bg-white/15 backdrop-blur-xl"
-                        : "bg-gradient-to-br from-[#2563EB] to-[#14B8A6] text-white"
-                    }`}
-                  >
-                    <Icon size={30} />
+                {/* Top Row: Icon Container */}
+                <div>
+                  <div className="flex items-center justify-between">
+                    <div
+                      className={`flex h-14 w-14 items-center justify-center rounded-2xl transition-all duration-300 ${
+                        isFeatured
+                          ? "border border-white/20 bg-white/10 text-white backdrop-blur-md shadow-md"
+                          : "border border-blue-100 bg-blue-50 text-blue-600 shadow-sm group-hover:rotate-6 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white"
+                      }`}
+                    >
+                      <Icon size={26} />
+                    </div>
+
+                    {isFeatured && (
+                      <div className="inline-flex items-center gap-1.5 rounded-full border border-blue-400/30 bg-blue-500/20 px-3 py-1 text-xs font-semibold text-blue-300 backdrop-blur-md">
+                        <Sparkles size={13} />
+                        <span>GUIDING NORTH STAR</span>
+                      </div>
+                    )}
                   </div>
 
+                  {/* Title & Description */}
                   <h3
-                    className={`mt-8 text-3xl font-black ${
-                      item.featured ? "text-white" : "text-[#0B1F3A]"
+                    className={`mt-8 text-2xl font-extrabold tracking-tight ${
+                      isFeatured
+                        ? "text-white"
+                        : "text-[#0B1F3A] group-hover:text-blue-600"
                     }`}
                   >
                     {item.title}
                   </h3>
 
                   <p
-                    className={`mt-6 leading-8 ${
-                      item.featured ? "text-blue-100" : "text-slate-600"
+                    className={`mt-3.5 text-xs sm:text-sm leading-relaxed font-normal ${
+                      isFeatured ? "text-slate-300" : "text-slate-600"
                     }`}
                   >
                     {item.description}
                   </p>
-
-                  {item.featured && (
-                    <div className="mt-10 inline-flex rounded-full border border-white/20 bg-white/10 px-5 py-2 text-sm font-semibold backdrop-blur-xl">
-                      Our Guiding Principle
-                    </div>
-                  )}
                 </div>
+
+                {/* Bottom Border Accent */}
+                <div
+                  className={`mt-8 pt-4 border-t ${
+                    isFeatured ? "border-white/10" : "border-slate-100"
+                  }`}
+                >
+                  <span
+                    className={`text-[11px] font-bold uppercase tracking-wider ${
+                      isFeatured
+                        ? "text-blue-300"
+                        : "text-slate-400 group-hover:text-blue-600"
+                    }`}
+                  >
+                    Strategic Pillar
+                  </span>
+                </div>
+
+                {/* Bottom Glowing Line */}
+                <div
+                  className={`absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r ${
+                    isFeatured
+                      ? "from-blue-400 via-cyan-300 to-indigo-300"
+                      : "from-blue-600 via-indigo-600 to-cyan-500 opacity-0 group-hover:opacity-100"
+                  } transition-opacity duration-300`}
+                />
               </motion.div>
             );
           })}
-        </div>
+        </motion.div>
 
-        {/* Bottom Quote */}
-
+        {/* ================= REDESIGNED SPLIT INTERACTIVE BANNER ================= */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
-          className="mx-auto mt-20 max-w-4xl rounded-[36px] bg-[#0B1F3A] px-10 py-16 text-center text-white shadow-2xl"
+          className="relative overflow-hidden mt-16 sm:mt-20 rounded-[32px] border border-white/10 bg-gradient-to-br from-[#0B1F3A] via-slate-900 to-[#102a4e] p-8 sm:p-12 text-white shadow-2xl"
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-blue-300">
-            OUR COMMITMENT
-          </p>
+          {/* Background Ambient Glow */}
+          <div className="pointer-events-none absolute -right-20 -top-20 h-96 w-96 rounded-full bg-blue-500/20 blur-[130px]" />
+          <div className="pointer-events-none absolute -left-20 -bottom-20 h-80 w-80 rounded-full bg-cyan-500/15 blur-[120px]" />
 
-          <h3 className="mt-6 text-3xl font-black leading-tight lg:text-5xl">
-            Creating Better Spaces.
-            <br />
-            Building Better Experiences.
-          </h3>
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+            {/* Left 7 Columns: Editorial Headline & CTA */}
+            <div className="lg:col-span-7 z-10 text-left">
+              <Badge className="inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/20 px-3.5 py-1 text-xs font-semibold text-blue-300 backdrop-blur-md">
+                <Sparkles size={13} />
+                <span>OUR COMMITMENT</span>
+              </Badge>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            We believe that exceptional facility management goes beyond
-            maintenance—it creates environments where businesses, communities
-            and people thrive.
-          </p>
+              <h3 className="mt-4 text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-snug text-white tracking-tight">
+                Architecting High-Performance Spaces. <br />
+                <span className="bg-gradient-to-r from-blue-400 via-cyan-300 to-indigo-300 bg-clip-text text-transparent">
+                  Generating Real Enterprise Value.
+                </span>
+              </h3>
+
+              <p className="mt-3.5 max-w-xl text-xs sm:text-sm leading-relaxed text-slate-300 font-normal">
+                Property management goes far beyond routine maintenance—we
+                engineer tech-enabled environments where businesses, workforce,
+                and communities thrive.
+              </p>
+
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <Button className="group inline-flex items-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-xs sm:text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:bg-blue-500 hover:shadow-blue-500/25">
+                  <span>Schedule Strategy Audit</span>
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Button>
+              </div>
+            </div>
+
+            {/* Right 5 Columns: Glassmorphic Floating Status Cards */}
+            <div className="lg:col-span-5 relative z-10 grid gap-3.5 sm:grid-cols-2 lg:grid-cols-1">
+              <div className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/15">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                  <ShieldCheck size={22} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    100% Statutory Compliance
+                  </p>
+                  <p className="text-[11px] text-slate-300">
+                    ISO-Certified Governance Standard
+                  </p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/15">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                  <Clock size={22} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    24/7 Command Helpdesk
+                  </p>
+                  <p className="text-[11px] text-slate-300">
+                    Average SLA dispatch &lt; 15 mins
+                  </p>
+                </div>
+              </div>
+
+              <div className="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/10 p-4 backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:bg-white/15 sm:col-span-2 lg:col-span-1">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">
+                  <Award size={22} />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">
+                    Zero Operational Downtime
+                  </p>
+                  <p className="text-[11px] text-slate-300">
+                    Predictive MEP & Facility Control
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </Container>
     </section>
