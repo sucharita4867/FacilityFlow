@@ -8,6 +8,7 @@ import Process from "../sections/Process";
 import WhyChooseUs from "../sections/WhyChooseUs";
 import MissionVision from "../sections/MissionVision";
 import Testimonials from "@/sections/Testimonials";
+import CTA from "@/sections/CTA";
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         <WhyChooseUs />
         <MissionVision />
         <Testimonials />
+        <CTA />
       </main>
     </>
   );
