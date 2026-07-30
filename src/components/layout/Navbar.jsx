@@ -65,7 +65,7 @@ export default function Navbar() {
           {/* ================= Mobile ================= */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-full p-2 text-white transition lg:hidden"
+            className="rounded-xl p-2 text-white transition lg:hidden"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

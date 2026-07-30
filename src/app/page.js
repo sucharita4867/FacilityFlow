@@ -9,6 +9,7 @@ import WhyChooseUs from "../sections/WhyChooseUs";
 import MissionVision from "../sections/MissionVision";
 import Testimonials from "@/sections/Testimonials";
 import CTA from "@/sections/CTA";
+import Footer from "@/components/layout/Footer";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Testimonials />
         <CTA />
       </main>
+      <Footer />
     </>
   );
 }
