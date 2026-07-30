@@ -32,7 +32,7 @@ export default function Process() {
     <section
       id="process"
       aria-label="Operational Execution Workflow"
-      className="relative overflow-hidden bg-white py-24 sm:py-32 border-t border-slate-200/80"
+      className="relative overflow-hidden bg-white dark:bg-[#07111F] text-slate-900 dark:text-slate-100 py-24 sm:py-32 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
     >
       {/* Decorative Background Mesh & Soft Blur Accents */}
       <div

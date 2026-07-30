@@ -64,7 +64,8 @@ export default function Footer() {
             </h2>
             <p className="mt-5 max-w-sm text-xs sm:text-sm leading-relaxed text-slate-400 font-normal">
               Delivering premium integrated property and facility management
-              solutions across Pan-India with innovation, professionalism, and operational governance.
+              solutions across Pan-India with innovation, professionalism, and
+              operational governance.
             </p>
 
             {/* Social Icons */}
@@ -144,8 +145,12 @@ export default function Footer() {
                   <Phone size={16} />
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-slate-500 uppercase">Phone</p>
-                  <p className="mt-0.5 text-slate-300 font-medium">+91 XXXXX XXXXX</p>
+                  <p className="text-[11px] font-bold text-slate-500 uppercase">
+                    Phone
+                  </p>
+                  <p className="mt-0.5 text-slate-300 font-medium">
+                    +91 98765 43210
+                  </p>
                 </div>
               </div>
 
@@ -154,7 +159,9 @@ export default function Footer() {
                   <Mail size={16} />
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-slate-500 uppercase">Email</p>
+                  <p className="text-[11px] font-bold text-slate-500 uppercase">
+                    Email
+                  </p>
                   <p className="mt-0.5 text-slate-300 font-medium break-all">
                     info@facilityflow.com
                   </p>
@@ -166,7 +173,9 @@ export default function Footer() {
                   <MapPin size={16} />
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-slate-500 uppercase">Office</p>
+                  <p className="text-[11px] font-bold text-slate-500 uppercase">
+                    Office
+                  </p>
                   <p className="mt-0.5 text-slate-300 font-medium">
                     Kolkata, West Bengal, India
                   </p>
@@ -189,7 +198,7 @@ export default function Footer() {
             <Link href="#" className="transition hover:text-slate-300">
               Terms & Conditions
             </Link>
-            
+
             {/* Scroll Back to Top Button */}
             <button
               onClick={scrollToTop}

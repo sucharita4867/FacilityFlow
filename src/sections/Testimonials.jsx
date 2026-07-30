@@ -78,7 +78,7 @@ export default function Testimonials() {
     <section
       id="testimonials"
       aria-label="Client Testimonials"
-      className="relative overflow-hidden bg-slate-50 py-24 sm:py-32 border-t border-slate-200/80"
+      className="relative overflow-hidden bg-slate-50 dark:bg-[#07111F] text-slate-900 dark:text-slate-100 py-24 sm:py-32 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
     >
       {/* Decorative Background Lighting */}
       <div

@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Sun, Moon } from "lucide-react";
+import { useTheme } from "next-themes";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import { navigation } from "@/constants/navigation";
@@ -13,13 +14,18 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  // Safely mount to prevent hydration mismatch and cascading render warnings
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(timer);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      // Background scroll state
       setIsScrolled(window.scrollY > 40);
-
-      // If scrolled near top, force active state to 'home'
       if (window.scrollY < 120) {
         setActiveSection("home");
       }
@@ -28,7 +34,6 @@ export default function Navbar() {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
 
-    // Active Section Detection via Intersection Observer
     const sectionIds = navigation
       .map((item) => item.href.replace("#", "").replace("/", ""))
       .filter((id) => id && id !== "");
@@ -63,9 +68,7 @@ export default function Navbar() {
     };
   }, []);
 
-  // Smooth Scroll Handler for links
   const handleNavClick = (e, href) => {
-    // Exact check for Home Link (# or / or #home)
     if (href === "/" || href === "#" || href === "#home") {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -102,12 +105,12 @@ export default function Navbar() {
       <div
         className={`mx-auto max-w-7xl rounded-full transition-all duration-500 ${
           isScrolled
-            ? "bg-slate-900/80 border border-slate-700/60 shadow-xl backdrop-blur-xl"
-            : "bg-white/10 backdrop-blur-md border border-white/20 shadow-lg"
+            ? "bg-slate-900/80 border border-slate-700/60 shadow-xl backdrop-blur-xl dark:bg-slate-950/80 dark:border-slate-800"
+            : "bg-white/10 backdrop-blur-md border border-white/20 shadow-lg dark:bg-slate-900/30 dark:border-white/10"
         }`}
       >
         <Container className="flex h-16 items-center justify-between px-6">
-          {/* ================= Logo ================= */}
+          {/* Logo */}
           <Link
             href="/"
             onClick={(e) => handleNavClick(e, "/")}
@@ -118,7 +121,7 @@ export default function Navbar() {
             </h1>
           </Link>
 
-          {/* ================= Desktop Menu ================= */}
+          {/* Desktop Links */}
           <nav className="hidden items-center gap-8 lg:flex">
             {navigation.map((item) => {
               const sectionId =
@@ -139,8 +142,6 @@ export default function Navbar() {
                   }`}
                 >
                   {item.name}
-
-                  {/* Active Indicator Underline */}
                   {isActive ? (
                     <motion.span
                       layoutId="activeNavIndicator"
@@ -159,25 +160,58 @@ export default function Navbar() {
             })}
           </nav>
 
-          {/* ================= CTA ================= */}
-          <div className="hidden lg:block">
+          {/* Desktop Right Actions */}
+          <div className="hidden lg:flex items-center gap-4">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-slate-700/50 bg-slate-800/50 text-white backdrop-blur-md transition-all duration-300 hover:border-cyan-400 hover:bg-slate-800 hover:text-cyan-400 dark:border-white/20 dark:bg-white/10"
+                aria-label="Toggle Theme"
+                type="button"
+              >
+                {theme === "dark" ? (
+                  <Sun size={18} className="text-amber-400" />
+                ) : (
+                  <Moon size={18} className="text-slate-200" />
+                )}
+              </button>
+            )}
+
             <Button className="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-500 hover:shadow-blue-500/30">
               <span>Get Quote</span>
               <ArrowRight size={16} />
             </Button>
           </div>
 
-          {/* ================= Mobile Toggle ================= */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-full p-2 text-white transition lg:hidden"
-            aria-label="Toggle Menu"
-          >
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile Right Actions */}
+          <div className="flex items-center gap-2 lg:hidden">
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-700/50 bg-slate-800/50 text-white backdrop-blur-md"
+                aria-label="Toggle Theme"
+                type="button"
+              >
+                {theme === "dark" ? (
+                  <Sun size={16} className="text-amber-400" />
+                ) : (
+                  <Moon size={16} className="text-slate-200" />
+                )}
+              </button>
+            )}
+
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="rounded-full p-2 text-white transition hover:bg-white/10"
+              aria-label="Toggle Menu"
+              type="button"
+            >
+              {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </Container>
 
-        {/* ================= Mobile Drawer ================= */}
+        {/* Mobile Drawer */}
         <AnimatePresence>
           {mobileOpen && (
             <motion.div
@@ -222,6 +256,7 @@ export default function Navbar() {
                     );
                   })}
                 </nav>
+
                 <div className="mt-6">
                   <Button className="w-full justify-center bg-blue-600 py-2.5 text-sm text-white hover:bg-blue-500">
                     Get Free Consultation

@@ -37,10 +37,10 @@ const cardVariants = {
 export default function MissionVision() {
   return (
     <section
-      id="mission"
-      aria-label="Mission, Vision & Values"
-      className="relative overflow-hidden bg-slate-50 py-24 sm:py-32 border-t border-slate-200/80"
-    >
+  id="mission"
+  aria-label="Mission, Vision & Values"
+  className="relative overflow-hidden bg-slate-50 dark:bg-[#07111F] text-slate-900 dark:text-slate-100 py-24 sm:py-32 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
+>
       {/* Decorative Light Background Accents */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"

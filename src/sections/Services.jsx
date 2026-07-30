@@ -39,7 +39,7 @@ export default function Services() {
     <section
       id="services"
       aria-label="Services"
-      className="relative bg-slate-50 pt-16 pb-16 sm:pt-24 sm:pb-36 border-t border-slate-200/80"
+      className="relative bg-slate-50 dark:bg-[#07111F] text-slate-900 dark:text-slate-100 pt-16 pb-16 sm:pt-24 sm:pb-36 border-t border-slate-200/80 dark:border-slate-800/80 transition-colors duration-300"
     >
       {/* Decorative Light Background Accents */}
       <div

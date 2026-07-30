@@ -29,7 +29,7 @@ export default function About() {
     <section
       id="about"
       aria-labelledby="about-heading"
-      className="relative overflow-hidden bg-slate-50 py-16 sm:py-32"
+      className="relative overflow-hidden bg-slate-50 dark:bg-[#07111F] text-slate-900 dark:text-slate-100 py-16 sm:py-32 transition-colors duration-300"
     >
       {/* Background Accents */}
       <div className="pointer-events-none absolute -left-40 top-1/3 -z-10 h-[450px] w-[450px] rounded-full bg-blue-200/40 blur-[130px]" />
