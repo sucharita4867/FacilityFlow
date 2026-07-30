@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
@@ -11,15 +12,90 @@ import { company } from "@/constants/company";
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
+      // Background scroll state
       setIsScrolled(window.scrollY > 40);
+
+      // If scrolled near top, force active state to 'home'
+      if (window.scrollY < 120) {
+        setActiveSection("home");
+      }
     };
+
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Active Section Detection via Intersection Observer
+    const sectionIds = navigation
+      .map((item) => item.href.replace("#", "").replace("/", ""))
+      .filter((id) => id && id !== "");
+
+    const observerCallback = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting && window.scrollY >= 120) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -50% 0px",
+      threshold: 0.1,
+    };
+
+    const observer = new IntersectionObserver(
+      observerCallback,
+      observerOptions,
+    );
+
+    sectionIds.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      observer.disconnect();
+    };
   }, []);
+
+  // Smooth Scroll Handler for links
+  const handleNavClick = (e, href) => {
+    // Exact check for Home Link (# or / or #home)
+    if (href === "/" || href === "#" || href === "#home") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setActiveSection("home");
+      setMobileOpen(false);
+      return;
+    }
+
+    if (href.startsWith("#")) {
+      e.preventDefault();
+      const targetId = href.replace("#", "");
+      const targetElement = document.getElementById(targetId);
+
+      if (targetElement) {
+        const offset = 80;
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = targetElement.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+
+        setActiveSection(targetId);
+        setMobileOpen(false);
+      }
+    }
+  };
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 transition-all duration-500 pt-4 px-4 lg:px-8">
@@ -32,40 +108,70 @@ export default function Navbar() {
       >
         <Container className="flex h-16 items-center justify-between px-6">
           {/* ================= Logo ================= */}
-          <Link href="/">
-            <div className="cursor-pointer">
-              <h1 className="text-2xl font-black tracking-tight text-white">
-                {company.name}
-              </h1>
-            </div>
+          <Link
+            href="/"
+            onClick={(e) => handleNavClick(e, "/")}
+            className="cursor-pointer"
+          >
+            <h1 className="text-2xl font-black tracking-tight text-white">
+              {company.name}
+            </h1>
           </Link>
 
           {/* ================= Desktop Menu ================= */}
           <nav className="hidden items-center gap-8 lg:flex">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="group relative text-sm font-semibold text-white transition-all duration-300 hover:text-blue-400"
-              >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-blue-500 transition-all duration-300 group-hover:w-full" />
-              </Link>
-            ))}
+            {navigation.map((item) => {
+              const sectionId =
+                item.href === "/" || item.href === "#" || item.href === "#home"
+                  ? "home"
+                  : item.href.replace("#", "");
+              const isActive = activeSection === sectionId;
+
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`group relative text-sm font-semibold transition-all duration-300 ${
+                    isActive
+                      ? "text-cyan-400 font-bold"
+                      : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  {item.name}
+
+                  {/* Active Indicator Underline */}
+                  {isActive ? (
+                    <motion.span
+                      layoutId="activeNavIndicator"
+                      className="absolute -bottom-1 left-0 h-[2.5px] w-full rounded-full bg-gradient-to-r from-blue-500 to-cyan-400"
+                      transition={{
+                        type: "spring",
+                        stiffness: 380,
+                        damping: 30,
+                      }}
+                    />
+                  ) : (
+                    <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-blue-400 transition-all duration-300 group-hover:w-full" />
+                  )}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* ================= CTA ================= */}
           <div className="hidden lg:block">
             <Button className="flex items-center gap-2 rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:bg-blue-500 hover:shadow-blue-500/30">
-              Get Quote
+              <span>Get Quote</span>
               <ArrowRight size={16} />
             </Button>
           </div>
 
-          {/* ================= Mobile ================= */}
+          {/* ================= Mobile Toggle ================= */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="rounded-xl p-2 text-white transition lg:hidden"
+            className="rounded-full p-2 text-white transition lg:hidden"
+            aria-label="Toggle Menu"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -79,21 +185,42 @@ export default function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="overflow-hidden rounded-b-full border-t border-slate-800 bg-slate-900/95 backdrop-blur-2xl lg:hidden"
+              className="overflow-hidden rounded-b-3xl border-t border-slate-800 bg-slate-900/95 backdrop-blur-2xl lg:hidden"
             >
               <Container className="py-6 px-6">
                 <nav className="flex flex-col gap-4">
-                  {navigation.map((item) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={() => setMobileOpen(false)}
-                      className="group flex items-center justify-between border-b border-slate-800 pb-2.5 text-base font-semibold text-white transition-colors hover:text-blue-400"
-                    >
-                      <span>{item.name}</span>
-                      <ArrowRight size={16} className="text-slate-400" />
-                    </Link>
-                  ))}
+                  {navigation.map((item) => {
+                    const sectionId =
+                      item.href === "/" ||
+                      item.href === "#" ||
+                      item.href === "#home"
+                        ? "home"
+                        : item.href.replace("#", "");
+                    const isActive = activeSection === sectionId;
+
+                    return (
+                      <Link
+                        key={item.name}
+                        href={item.href}
+                        onClick={(e) => handleNavClick(e, item.href)}
+                        className={`group flex items-center justify-between border-b border-slate-800 pb-2.5 text-base font-semibold transition-colors ${
+                          isActive
+                            ? "text-cyan-400 font-bold"
+                            : "text-white/80 hover:text-white"
+                        }`}
+                      >
+                        <span>{item.name}</span>
+                        <ArrowRight
+                          size={16}
+                          className={`transition-transform ${
+                            isActive
+                              ? "text-cyan-400 translate-x-1"
+                              : "text-slate-400"
+                          }`}
+                        />
+                      </Link>
+                    );
+                  })}
                 </nav>
                 <div className="mt-6">
                   <Button className="w-full justify-center bg-blue-600 py-2.5 text-sm text-white hover:bg-blue-500">
