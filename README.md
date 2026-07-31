@@ -176,7 +176,7 @@ Redesign and develop a premium Property & Facility Management corporate website 
 
 **Sucharita Sardar**
 
-GitHub: https://github.com/sucharita4867
+GitHub: [https://github.com/sucharita4867]
 
 Portfolio: https://sucharita-portfolio-65.netlify.app/
 
