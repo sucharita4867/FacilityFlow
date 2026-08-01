@@ -8,7 +8,7 @@ A modern, premium, and fully responsive corporate website for a Property & Facil
 
 **Live URL:** [https://facilityflow-dev.netlify.app/]
 
-**GitHub Repository:** https://github.com/sucharita4867/FacilityFlow
+**GitHub Repository:** [https://github.com/sucharita4867/FacilityFlow
 
 ---
 
